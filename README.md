@@ -25,12 +25,12 @@ make
 
 ## Usage
 
- ```sh
+ ```bash
  #Run main program
  ./chat
 ```
 
-```sh
+```bash
  #Run bash script
  chmod +x chat-bot
  chat-bot
