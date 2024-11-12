@@ -11,7 +11,7 @@ Basically it's a little program to chat with another locally using named pipes a
 
 ## Features List
 
-- Be able to communicate with someone else 
+- Be able to communicate with someone else using main program
 - Be able to communicate with a bot using chat-bot script
 
 
