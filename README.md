@@ -29,6 +29,7 @@ make
  #Run main program
  ./chat
 ```
+
 ```
  #Run bash script
  chmod +x chat-bot
