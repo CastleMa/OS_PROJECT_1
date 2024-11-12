@@ -30,7 +30,7 @@ make
  ./chat
 ```
 
-```
+```sh
  #Run bash script
  chmod +x chat-bot
  chat-bot
