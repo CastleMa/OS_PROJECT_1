@@ -6,7 +6,7 @@ usage() {
     exit 1
 }
 
-#cool
+#coolcool
 
 # Parse command-line options
 while getopts ":m:r:" opt; do
