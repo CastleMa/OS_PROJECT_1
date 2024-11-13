@@ -10,23 +10,35 @@
 
 
 # Programme chat en C++
-## TodoList
+## Structure
 
 
 # Programme chat-bot en Bash
-## TodoList
+## Structure
 
 
 
-# Tests Autocaca
-## TodoList
+# Tests Auto
+## Structure
 
 
 
 
 # Rapport
-## TodoList
+
+## Todo 
 - [ ] Choix du template latex
+
+## Structure 
+<small>*une sorte de README mais en rapport*</small>
+1. Introduction et présentation
+2. Liste des fonctionnalités
+3. Installation
+4. Usage et illustrations
+5. Difficultés rencontrées
+6. Solutions apportées
+7. Choix d'implémentation
+8. Conclusion
 
 
 ## Notions à mettre dans le rapport
