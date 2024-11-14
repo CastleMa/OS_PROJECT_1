@@ -10,7 +10,7 @@
 
 
 # Programme chat en C++
-[Ce fichier](./src/main.c)
+[Ce fichier](./src/main.cpp)
 
 ## Structure
 
