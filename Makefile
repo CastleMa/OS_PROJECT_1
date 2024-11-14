@@ -9,7 +9,7 @@ SFILES  := cpp
 OFILES  := o
 CC      := gcc
 CFLAGS  := -Wall -Wextra -O3 -pedantic -march=native -Wnull-dereference -Winline -Wconversion -g -fsanitize=address,undefined
-LIBS    := -fsanitize=address,undefined
+LIBS    := -fsanitize=address,undefined -lstdc++
 
 SOURCES := $(shell find $(SRCDIR) -name "*.$(SFILES)")
 OBJECTS := $(patsubst $(SRCDIR)%.$(SFILES), $(OBJDIR)%.$(OFILES), $(SOURCES))
