@@ -10,65 +10,58 @@
 
 
 
+
+
+
+
+// RAII class for managing named pipes
+class NamedPipes {
+public:
+    NamedPipes(const std::string& from_user, const std::string& to_user) {
+        create_named_pipes(from_user, to_user);
+        from_pipe = "/tmp/" + from_user + "-" + to_user + ".chat";
+        to_pipe = "/tmp/" + to_user + "-" + from_user + ".chat";
+    }
+
+    ~NamedPipes() {
+        cleanup_named_pipes(from_pipe, to_pipe);
+    }
+
+private:
+    std::string from_pipe;
+    std::string to_pipe;
+};
+
+
+
+
+
+
 int main(int argc, char* argv[]) {
-    //too much args verif
-    if (argc < 3 || argc > 5) {
-        std::cerr << "\033[31mERROR\033[0m\nUse: " << argv[0] << " from_user_pseudo to_user_pseudo [\033[1m--bot\033[0m] [\033[1m--manuel\033[0m]." << std::endl;
-        return ERR_INVALID_ARGS;
+    std::string from_user;
+    std::string to_user;
+    bool manual_mode;
+    bool bot_mode;
+
+    int verification_result = verify_arguments(argc, argv, from_user, to_user, manual_mode, bot_mode);
+    if (verification_result != 0) {
+        return verification_result;
     }
-
-    std::string from_user = argv[1];
-    std::string to_user = argv[2]; 
-    bool manual_mode = false;
-    bool bot_mode    = false;
-
-    //forbidden character verif
-    if (contains_forbidden_characters(from_user) || contains_forbidden_characters(to_user)) {
-    std::cerr << "\033[31mERROR\033[0m\nArguments must not contain <, >, -, [, or ]." << std::endl;
-    return ERR_INVALID_CHARACTER;
-    }
-
-    //too long verif
-    if (from_user.size() > 30 || to_user.size() > 30) {
-        std::cerr << "\033[31mERROR\033[0m\nUsername too long." << std::endl;
-        return ERR_USERNAME_TOO_LONG;
-    }
-
-    //options verif
-    for (int i = 3; i < argc; i++) {
-        std::string arg = argv[i];
-        if (arg == "--manuel") {
-            manual_mode = true;
-        } else if (arg == "--bot") {
-            bot_mode = true;
-        } else {
-            std::cerr << "\033[31mERROR\033[0m\nChoose between these options: [\033[1m--bot\033[0m], [\033[1m--manuel\033[0m]. Not: '" << arg << "'." << std::endl;
-            return ERR_INVALID_ARGS;
-        }
-    }
-
-
 
 
     // Gestion des signaux
     signal(SIGINT, handle_sigint);
 
     // Création des pipes nommés
-    create_named_pipes(from_user, to_user);
+    NamedPipes pipes(from_user, to_user);
 
     // Arguments pour les threads
+    ChatArgs args = {from_user, to_user, manual_mode};
     ChatArgs args = {from_user, to_user, manual_mode};
     pthread_t send_thread, receive_thread;
 
     // Création des threads pour envoyer et recevoir des messages
-    if (pthread_create(&send_thread, nullptr, send_messages, &args) != 0) {
-        std::cerr << "Error while creating thread." << std::endl;
-        return ERR_THREAD_CREATION;
-    }
-    if (pthread_create(&receive_thread, nullptr, receive_messages, &args) != 0) {
-        std::cerr << "Error while creating thread." << std::endl;
-        return ERR_THREAD_CREATION;
-    }
+    create_threads(args, send_thread, receive_thread);
 
     // Attendre la fin des threads
     pthread_join(send_thread, nullptr);
@@ -77,6 +70,6 @@ int main(int argc, char* argv[]) {
     // Nettoyage des pipes nommés à la fin
     cleanup_named_pipes(from_user, to_user);
 
-    return EXIT_SUCCESS;
+    return 0;
 }
 
