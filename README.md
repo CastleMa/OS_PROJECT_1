@@ -27,7 +27,7 @@
 
 
 
-# Tests Automatique
+# Tests Automatiques
 ## Structure
 
 
