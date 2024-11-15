@@ -32,7 +32,7 @@
 - [ ] voir la section conseils du pdf 
 
 ## Structure
-[Script](./chat-bot)
+1. [Script](./chat-bot)
 
 
 # Tests Automatiques
