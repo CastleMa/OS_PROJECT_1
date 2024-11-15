@@ -59,7 +59,6 @@
 - Précisions sur les signaux utilisés pour le projet
 - Brèves explications sur les retours d'erreurs, SIGINT, mauvais arguments, pseudo trop long, caractères spéciaux
 - Justifications du processus utilisé parmi les 2 lors des 3 scénarios du mode --manuel
-- Justifications du processus utilisé parmi les 2 lors des 3 scénarios du mode --manuel
 - Voir section Conseils du pdf pour préciser l'implémentation de ces conseils
 - 2-3 pages
 
