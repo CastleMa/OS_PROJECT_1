@@ -111,8 +111,17 @@ Dans le répertoire où se trouve le fichier exécutable, faites:
 
 ### Difficultés rencontrées, solution apportées, choix d'implémentation
 
-L'utilisation de C n'était pas possible quant à l'utilisation de certaines librairies comme *\<iostream>*, alors nous avons choisi d'utiliser C++. La gestion des erreurs s'est faite via des macros dans un fichier *header* pour permettre une meilleure lisibilité et modularisation.
+#### Préambule et balbutiements
+L'utilisation de C n'était pas possible quant à l'utilisation de certaines librairies comme *\<iostream>*, alors nous avons choisi d'utiliser C++. La gestion des erreurs s'est faite via des macros dans un fichier *header* pour permettre une meilleure lisibilité. Le soucis d'organisation nous a égalemenet préoccupé, nous avons opté pour une structure modulaire séparant les fonctions, les classes et le main dans différents fichiers et créant un dossier supplémentaire contenant les différents *headers*. 
 
+#### Pipes, signaux et processus
+
+Pas encore fait, faut que je fasse des tests pour comprendre le binz là
+
+
+#### Mémoire partagée et bot
+
+idem
 
 
 ### Conclusion
