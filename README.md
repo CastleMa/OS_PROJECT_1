@@ -10,27 +10,33 @@
 
 
 # Programme chat en C++
-[Ce fichier](./src/main.cpp)
+
+## ToDo
+- [x] gestion des erreurs basiques ✅ 2024-11-14
+- [ ] l'envoie de messages avec les critères du pdf en utilisant les pipes
+- [ ] implémentation des différents signaux SIGINT ET SIGPIPE pour gestion des processus
+- [ ] mode manuel avec les 3 cas pour la récéption des messages (SIGINT, mess envoyé par user, +4096bytes en attente)
+
 
 ## Structure
-
-
+1. [Errors](./include/errors.hpp)
+2. [Functions](./src/functions.cpp)
+3. [Classes](./src/classes.cpp)
+4. [Main](./src/main.cpp)
 
 
 
 # Programme chat-bot en Bash
-[Ce fichier](./chat-bot)
+
+## ToDo
+- [ ] voir la section conseils du pdf 
 
 ## Structure
-
-
-
+1. [Script](./chat-bot)
 
 
 # Tests Automatiques
-## Structure
-
-
+*On devrait recevoir des tests automatiques ?*
 
 
 # Rapport
@@ -44,9 +50,7 @@
 2. [Installation](#installation)
 3. [Liste des fonctionnalités](#liste-des-fonctionnalités)
 4. [Usage et illustrations](#usage-et-illustrations)
-5. [Difficultés rencontrées](#difficultés-rencontrées)
-6. [Solutions apportées](#solutions-apportées)
-7. [Choix d'implémentation](#choix-dimplémentation)
+5. [Difficultés rencontrées, solution apportées, choix d'implémentation](#difficultés-rencontrées-solution-apportées-choix-dimplémentation)
 8. [Conclusion](#conclusion)
 
 
@@ -54,7 +58,7 @@
 - Justification de l'utilisation du type de mémoire partagée et la quantité (4096bytes à priori)
 - Précisions sur les signaux utilisés pour le projet
 - Brèves explications sur les retours d'erreurs, SIGINT, mauvais arguments, pseudo trop long, caractères spéciaux
-- Justifications des processus utlisés lors des 3 scénarios du mode --bot
+- Justifications du processus utilisé parmi les 2 lors des 3 scénarios du mode --manuel
 - Voir section Conseils du pdf pour préciser l'implémentation de ces conseils
 - 2-3 pages
 
@@ -106,8 +110,17 @@ Dans le répertoire où se trouve le fichier exécutable, faites:
 
 ### Difficultés rencontrées, solution apportées, choix d'implémentation
 
-L'utilisation de C n'était pas possible quant à l'utilisation de certaines librairies, alors nous avons choisi d'utiliser C++. 
+#### Préambule et balbutiements
+L'utilisation de C n'était pas possible quant à l'utilisation de certaines librairies comme *\<iostream>*, alors nous avons choisi d'utiliser C++. La gestion des erreurs s'est faite via des macros dans un fichier *header* pour permettre une meilleure lisibilité. Le soucis d'organisation nous a égalemenet préoccupé, nous avons opté pour une structure modulaire séparant les fonctions, les classes et le main dans différents fichiers et créant un dossier supplémentaire contenant les différents *headers*. 
 
+#### Pipes, signaux et processus
+
+Pas encore fait, faut que je fasse des tests pour comprendre le binz là
+
+
+#### Mémoire partagée et bot
+
+idem
 
 
 ### Conclusion
