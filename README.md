@@ -10,35 +10,33 @@
 
 
 # Programme chat en C++
-[Main](./src/main.cpp)
+
+## ToDo
+- [x] gestion des erreurs basiques ✅ 2024-11-14
+- [ ] l'envoie de messages avec les critères du pdf en utilisant les pipes
+- [ ] implémentation des différents signaux SIGINT ET SIGPIPE pour gestion des processus
+- [ ] mode manuel avec les 3 cas pour la récéption des messages (SIGINT, mess envoyé par user, +4096bytes en attente)
 
 ## Structure
-
-1. Importation des librairies
-2. [Errors](./src/errors.hpp)
-3. [FunctionDeclaration](./src/functions.hpp) [FunctionImplementation](./src/functions.cpp)
+1. [Errors](./src/errors.hpp)
+2. [Functions](./src/functions.cpp)
+3. [Classes](./src/classes.cpp)
 4. [Main](./src/main.cpp)
-5. Définitions des fonctions    
-    1.
-
-
 
 
 
 # Programme chat-bot en Bash
-[Ce fichier](./chat-bot)
+
+## ToDo
+- [ ] voir la section conseils du pdf 
 
 ## Structure
-
-
+[Script](./chat-bot)
 
 
 
 # Tests Automatiques
-
-
-
-
+*On devrait recevoir des tests automatiques ?*
 
 
 # Rapport
@@ -62,7 +60,7 @@
 - Justification de l'utilisation du type de mémoire partagée et la quantité (4096bytes à priori)
 - Précisions sur les signaux utilisés pour le projet
 - Brèves explications sur les retours d'erreurs, SIGINT, mauvais arguments, pseudo trop long, caractères spéciaux
-- Justifications des processus utlisés lors des 3 scénarios du mode --bot
+- Justifications du processus utilisé parmi les 2 lors des 3 scénarios du mode --manuel
 - Voir section Conseils du pdf pour préciser l'implémentation de ces conseils
 - 2-3 pages
 
