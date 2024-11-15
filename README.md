@@ -50,9 +50,7 @@
 2. [Installation](#installation)
 3. [Liste des fonctionnalités](#liste-des-fonctionnalités)
 4. [Usage et illustrations](#usage-et-illustrations)
-5. [Difficultés rencontrées](#difficultés-rencontrées)
-6. [Solutions apportées](#solutions-apportées)
-7. [Choix d'implémentation](#choix-dimplémentation)
+5. [Difficultés rencontrées, solution apportées, choix d'implémentation](#difficultés-rencontrées-solution-apportées-choix-dimplémentation)
 8. [Conclusion](#conclusion)
 
 
