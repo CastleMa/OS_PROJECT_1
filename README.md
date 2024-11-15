@@ -17,11 +17,6 @@
 - [ ] implémentation des différents signaux SIGINT ET SIGPIPE pour gestion des processus
 - [ ] mode manuel avec les 3 cas pour la récéption des messages (SIGINT, mess envoyé par user, +4096bytes en attente)
 
-## ToDo
-- [x] gestion des erreurs basiques ✅ 2024-11-14
-- [ ] l'envoie de messages avec les critères du pdf en utilisant les pipes
-- [ ] implémentation des différents signaux SIGINT ET SIGPIPE pour gestion des processus
-- [ ] mode manuel avec les 3 cas pour la récéption des messages (SIGINT, mess envoyé par user, +4096bytes en attente)
 
 ## Structure
 1. [Errors](./include/errors.hpp)
