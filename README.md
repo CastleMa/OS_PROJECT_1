@@ -20,7 +20,7 @@
 
 ## Structure
 1. [Errors](./include/errors.hpp)
-2. [Functions](./src/func   tions.cpp)
+2. [Functions](./src/functions.cpp)
 3. [Classes](./src/classes.cpp)
 4. [Main](./src/main.cpp)
 
@@ -33,12 +33,9 @@
 
 ## Structure
 [Script](./chat-bot)
-[Script](./chat-bot)
-
 
 
 # Tests Automatiques
-*On devrait recevoir des tests automatiques ?*
 *On devrait recevoir des tests automatiques ?*
 
 
