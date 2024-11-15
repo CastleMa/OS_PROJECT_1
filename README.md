@@ -17,8 +17,14 @@
 - [ ] implémentation des différents signaux SIGINT ET SIGPIPE pour gestion des processus
 - [ ] mode manuel avec les 3 cas pour la récéption des messages (SIGINT, mess envoyé par user, +4096bytes en attente)
 
+## ToDo
+- [x] gestion des erreurs basiques ✅ 2024-11-14
+- [ ] l'envoie de messages avec les critères du pdf en utilisant les pipes
+- [ ] implémentation des différents signaux SIGINT ET SIGPIPE pour gestion des processus
+- [ ] mode manuel avec les 3 cas pour la récéption des messages (SIGINT, mess envoyé par user, +4096bytes en attente)
+
 ## Structure
-1. [Errors](./src/errors.hpp)
+1. [Errors](./include/errors.hpp)
 2. [Functions](./src/functions.cpp)
 3. [Classes](./src/classes.cpp)
 4. [Main](./src/main.cpp)
@@ -30,12 +36,17 @@
 ## ToDo
 - [ ] voir la section conseils du pdf 
 
+## ToDo
+- [ ] voir la section conseils du pdf 
+
 ## Structure
+[Script](./chat-bot)
 [Script](./chat-bot)
 
 
 
 # Tests Automatiques
+*On devrait recevoir des tests automatiques ?*
 *On devrait recevoir des tests automatiques ?*
 
 
@@ -60,6 +71,7 @@
 - Justification de l'utilisation du type de mémoire partagée et la quantité (4096bytes à priori)
 - Précisions sur les signaux utilisés pour le projet
 - Brèves explications sur les retours d'erreurs, SIGINT, mauvais arguments, pseudo trop long, caractères spéciaux
+- Justifications du processus utilisé parmi les 2 lors des 3 scénarios du mode --manuel
 - Justifications du processus utilisé parmi les 2 lors des 3 scénarios du mode --manuel
 - Voir section Conseils du pdf pour préciser l'implémentation de ces conseils
 - 2-3 pages
