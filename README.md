@@ -20,16 +20,13 @@
 
 ## Structure
 1. [Errors](./include/errors.hpp)
-2. [Functions](./src/functions.cpp)
+2. [Functions](./src/func   tions.cpp)
 3. [Classes](./src/classes.cpp)
 4. [Main](./src/main.cpp)
 
 
 
 # Programme chat-bot en Bash
-
-## ToDo
-- [ ] voir la section conseils du pdf 
 
 ## ToDo
 - [ ] voir la section conseils du pdf 
