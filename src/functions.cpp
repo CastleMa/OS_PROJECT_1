@@ -5,8 +5,9 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include "errors.hpp"
+#include "errors.hpp"
 #include "functions.hpp"
-#include "struct.hpp"
+#include "datastruct.hpp"
 
 
 // Function to verify arguments
@@ -43,7 +44,8 @@ int verify_arguments(int argc, char* argv[], std::string& from_user, std::string
         }
     }
 
-    return 0; //no errors
+    return SUCCESS; 
+
 }
 
 // Function to check if a string contains forbidden characters
@@ -62,11 +64,11 @@ bool contains_forbidden_characters(const std::string& str) {
 // Function to create and manage threads
 int create_threads(ChatArgs& args, pthread_t& send_thread, pthread_t& receive_thread) {
     if (pthread_create(&send_thread, nullptr, send_messages, &args) != 0) {
-        std::cerr << "Error while creating thread." << std::endl;
+        std::cerr << "\033[31mERROR\033[0m while creating thread." << std::endl;
         return ERR_THREAD_CREATION;
     }
     if (pthread_create(&receive_thread, nullptr, receive_messages, &args) != 0) {
-        std::cerr << "Error while creating thread." << std::endl;
+        std::cerr << "\033[31mERROR\033[0m while creating thread." << std::endl;
         return ERR_THREAD_CREATION;
     }
 
@@ -78,23 +80,6 @@ void handle_sigint(int sig) {
     exit(0);
 }
 
-// Fonction pour créer les pipes nommés
-void create_named_pipes(const std::string& user, const std::string& dest) {
-    std::string pipe_send = "/tmp/" + user + "-" + dest + ".chat";
-    std::string pipe_receive = "/tmp/" + dest + "-" + user + ".chat";
-
-    mkfifo(pipe_send.c_str(), 0666);
-    mkfifo(pipe_receive.c_str(), 0666);
-}
-
-// Fonction pour nettoyer les pipes nommés
-void cleanup_named_pipes(const std::string& user, const std::string& dest) {
-    std::string pipe_send = "/tmp/" + user + "-" + dest + ".chat";
-    std::string pipe_receive = "/tmp/" + dest + "-" + user + ".chat";
-
-    unlink(pipe_send.c_str());
-    unlink(pipe_receive.c_str());
-}
 
 // Fonction pour envoyer des messages
 void* send_messages(void* arg) {

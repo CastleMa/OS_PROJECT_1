@@ -1,5 +1,6 @@
 TOPDIR  := ./
 SRCDIR  := $(TOPDIR)src/
+INCDIR  := $(TOPDIR)include/
 OBJDIR  := $(TOPDIR)obj/
 BINDIR  := $(TOPDIR)
 NAME    := chat
@@ -8,7 +9,7 @@ EXE     := $(BINDIR)$(NAME)
 SFILES  := cpp
 OFILES  := o
 CC      := gcc
-CFLAGS  := -Wall -Wextra -O3 -pedantic -march=native -Wnull-dereference -Winline -Wconversion -g -fsanitize=address,undefined
+CFLAGS  := -Wall -Wextra -O3 -pedantic -march=native -Wnull-dereference -Winline -Wconversion -g -fsanitize=address,undefined -I$(INCDIR)
 LIBS    := -fsanitize=address,undefined -lstdc++
 
 SOURCES := $(shell find $(SRCDIR) -name "*.$(SFILES)")

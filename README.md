@@ -10,14 +10,14 @@
 
 
 # Programme chat en C++
-[Ce fichier](./src/main.cpp)
+[Main](./src/main.cpp)
 
 ## Structure
 
 1. Importation des librairies
-2. Define toutes les erreurs 
-3. Déclarations de fonctions
-4. Main
+2. [Errors](./src/errors.hpp)
+3. [FunctionDeclaration](./src/functions.hpp) [FunctionImplementation](./src/functions.cpp)
+4. [Main](./src/main.cpp)
 5. Définitions des fonctions    
     1.
 
