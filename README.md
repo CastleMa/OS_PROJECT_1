@@ -13,15 +13,16 @@
 
 ## ToDo
 - [x] gestion des erreurs basiques ✅ 2024-11-14
-- [ ] l'envoie de messages avec les critères du pdf en utilisant les pipes
-- [ ] implémentation des différents signaux SIGINT ET SIGPIPE pour gestion des processus
+- [x] l'envoie de messages avec les critères du pdf en utilisant les pipes ✅ 2024-11-16
+- [x] implémentation des différents signaux SIGINT ET SIGPIPE pour gestion des processus ✅ 2024-11-16
 - [ ] mode manuel avec les 3 cas pour la récéption des messages (SIGINT, mess envoyé par user, +4096bytes en attente)
+- [ ] mode bot
 
 
 ## Structure
-1. [Errors](./include/errors.hpp)
-2. [Functions](./src/functions.cpp)
-3. [Classes](./src/classes.cpp)
+1. [Errors](./include/errors.hpp) 
+2. [Functions](./src/functions.cpp)/[header](./include/functions.hpp)
+3. [Classes](./src/classes.cpp)/[header](./include/datastruct.hpp)
 4. [Main](./src/main.cpp)
 
 
@@ -45,9 +46,9 @@
 - [ ] Choix du template latex si latex car peut être markdown si flemme et pas le temps
 
 ## Structure 
-<small>*une sorte de README mais en rapport*</small>
+<small>*On fait une sorte de README dans le rapport*</small>
 1. [Introduction et présentation](#introduction-et-présentation)
-2. [Installation](#installation)
+2. [Dépendances et installation](#dépendances-et-installation)
 3. [Liste des fonctionnalités](#liste-des-fonctionnalités)
 4. [Usage et illustrations](#usage-et-illustrations)
 5. [Difficultés rencontrées, solution apportées, choix d'implémentation](#difficultés-rencontrées-solution-apportées-choix-dimplémentation)
@@ -71,9 +72,19 @@
 Ce projet de INFO-F201 consiste en un petit programme permettant de discuter avec une personne ou un robot localement à l'aide de pipes nommés. Nous allons d'abord expliquer comment installer le programme et le faire tourner. Puis lister les fonctionnalités de ce dernier, montrer des exemples d'utilisation. Ensuite, nous discuterons des difficultés rencontrés et des solutions apportées en justifiant nos choix d'implémentation. Enfin, nous terminerons par faire une conclusion du projet en donnant notre sentiment global de cette aventure.
 
 
-### Installation
+### Dépendances et installation
 
-Nous avons pour le projet décidé de faire un dépot github pour faciliter la mise en oeuvre du projet. Comme les fichiers sources et un *Makefile* se trouvent dans le zip, vous pouvez compiler et exécuter le programme depuis le chemin de ce dernier à l'aide de *make*. Alternativement si vous perdez le fichier zip, vous pouvez exécuter ces commandes dans le répertoire de votre choix:
+Tout d'abord, le programme a été développé pour tourner sur une distro Debian. Quelques préliminaires sont requis pour s'assurer une bonne installation. Ouvrez le terminal (ctrl+alt+t) et exécutez ces commandes ci-dessous:
+
+ ```bash
+sudo apt update
+sudo apt install build-essential
+sudo apt install g++
+sudo apt install make
+```
+
+Nous avons décidé de faire un dépot github pour faciliter la mise en oeuvre du projet. Comme les fichiers sources et un *Makefile* se trouvent dans le zip, vous pouvez compiler et exécuter le programme depuis le chemin de ce dernier à l'aide de *make*. Alternativement si vous perdez le fichier zip, vous pouvez exécuter les commandes suivantes dans le répertoire de votre choix:
+
 
  ```bash
 git clone https://github.com/CastleMa/OS_PROJECT_1
@@ -114,15 +125,12 @@ Dans le répertoire où se trouve le fichier exécutable, faites:
 L'utilisation de C n'était pas possible quant à l'utilisation de certaines librairies comme *\<iostream>*, alors nous avons choisi d'utiliser C++. La gestion des erreurs s'est faite via des macros dans un fichier *header* pour permettre une meilleure lisibilité. Le soucis d'organisation nous a égalemenet préoccupé, nous avons opté pour une structure modulaire séparant les fonctions, les classes et le main dans différents fichiers et créant un dossier supplémentaire contenant les différents *headers*. 
 
 #### Pipes, signaux et processus
-
 Pas encore fait, faut que je fasse des tests pour comprendre le binz là
 
 
 #### Mémoire partagée et bot
-
 idem
 
 
 ### Conclusion
-
 blabla
