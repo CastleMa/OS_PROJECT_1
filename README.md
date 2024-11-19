@@ -15,7 +15,7 @@
 - [x] gestion des erreurs basiques ✅ 2024-11-14
 - [x] l'envoie de messages avec les critères du pdf en utilisant les pipes ✅ 2024-11-16
 - [x] implémentation des différents signaux SIGINT ET SIGPIPE pour gestion des processus ✅ 2024-11-16
-- [ ] mode manuel avec les 3 cas pour la récéption des messages (SIGINT, mess envoyé par user, +4096bytes en attente)
+- [x] mode manuel avec les 3 cas pour la récéption des messages (SIGINT, mess envoyé par user, +4096bytes en attente)
 - [ ] mode bot
 - [ ] checkup des codes d'erreurs 
 

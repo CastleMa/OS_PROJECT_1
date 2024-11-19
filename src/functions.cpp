@@ -54,6 +54,17 @@ int verify_arguments(int argc, char* argv[], std::string& from_user, std::string
 
 
 
+void display_information(){
+
+    if (args_ptr->manual_mode) {
+        std::cout << "\033[33mWARNING\033[0m manual mode enabled, press CTRL+C or send messages to receive messages from other user\nYou can CTRL+C before user joins or CTRL+D during your chat to exit." << std::endl;
+    }
+
+
+}
+
+
+
 //handled by parent process
 bool contains_forbidden_characters(const std::string& str) {
     const std::string forbidden = "<>-[]/";

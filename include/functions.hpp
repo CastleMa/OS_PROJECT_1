@@ -7,6 +7,7 @@
 bool contains_forbidden_characters(const std::string& str);
 void handle_sigint(int sig);
 void handle_sigpipe(int sig);
+void display_information();
 void* send_messages();
 void* receive_messages();
 void output_shared_memory();
