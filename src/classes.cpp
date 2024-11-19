@@ -1,10 +1,12 @@
-#include "datastruct.hpp"
+#include "structNclasses.hpp"
 #include <iostream>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <unistd.h>
 #include "errors.hpp"
+
+
 
 NamedPipes::NamedPipes(const std::string& from_user, const std::string& to_user) {
     create_named_pipes(from_user, to_user);
@@ -26,6 +28,7 @@ void NamedPipes::create_named_pipes(const std::string& from_user, const std::str
     } else {
         if (mkfifo(pipe_send.c_str(), 0666) == -1) {
             std::cerr << "\033[31mERROR\033[0m creating send pipe: " << pipe_send << std::endl;
+            exit(ERR_PIPE_CREATION);
         } else {
         std::cerr << "\033[32mSuccess\033[0m creating send pipe: " << pipe_send << std::endl;
         }
@@ -37,6 +40,7 @@ void NamedPipes::create_named_pipes(const std::string& from_user, const std::str
     } else {
         if (mkfifo(pipe_receive.c_str(), 0666) == -1) {
             std::cerr << "\033[31mERROR\033[0m creating receive pipe: " << pipe_receive << std::endl;
+            exit(ERR_PIPE_CREATION);
         } else {
             std::cerr << "\033[32mSuccess\033[0m creating receive pipe: " << pipe_receive << std::endl;
         }
@@ -57,3 +61,6 @@ void NamedPipes::cleanup_named_pipes(const std::string& from_pipe, const std::st
         std::cerr << "\033[32mSuccess\033[0m removing receive pipe: " << to_pipe << std::endl;
     }
 }
+
+
+

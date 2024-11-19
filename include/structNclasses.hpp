@@ -1,13 +1,22 @@
-#ifndef DATA_STRUCT_HPP
-#define DATA_STRUCT_HPP
+#ifndef STRUCTNCLASSES_HPP
+#define STRUCTNCLASSES_HPP
 
 #include <string>
+
+
+//structs and classes
 
 struct ChatArgs {
     std::string from_user;
     std::string to_user;
     bool manual_mode;
     bool bot_mode;
+};
+
+
+struct SharedMemory {
+    void* shm_ptr;
+    size_t* shm_offset_ptr;
 };
 
 class NamedPipes {

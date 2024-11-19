@@ -17,6 +17,7 @@
 - [x] implémentation des différents signaux SIGINT ET SIGPIPE pour gestion des processus ✅ 2024-11-16
 - [ ] mode manuel avec les 3 cas pour la récéption des messages (SIGINT, mess envoyé par user, +4096bytes en attente)
 - [ ] mode bot
+- [ ] checkup des codes d'erreurs 
 
 
 ## Structure
