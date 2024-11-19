@@ -80,46 +80,67 @@ bool contains_forbidden_characters(const std::string& str) {
 
 //handled by parent process
 void handle_sigint(int sig) {
-    std::cout << "\n\033[33mWARNING\033[0m signal SIGINT received, printing messages.." << std::endl;
-    output_shared_memory();
-    
+    if (args_ptr->manual_mode) {
+        std::cout << "\n\033[33mWARNING\033[0m signal SIGINT received.." << std::endl;
+        output_shared_memory();
+    } else {
+        std::cout << "\n\033[33mWARNING\033[0m signal SIGINT received and no --manuel mode, closing chat.." << std::endl;
+        //close shared memory and file descriptors
+        close(fd_send);
+        close(fd_receive);
+        munmap(shm_ptr, SHM_SIZE);
+        unlink(SHM_NAME);
+        
+        exit(SUCCESS);
+    }
 }
 
 
 //handled by parent process and child process
 void output_shared_memory() {
     if (shm_ptr != nullptr) {
-        size_t* shm_offset_ptr = static_cast<size_t*>(shm_ptr);
+        shm_offset_ptr = static_cast<size_t*>(shm_ptr);
         size_t shm_offset = *shm_offset_ptr;
 
         char* shm_data = static_cast<char*>(shm_ptr) + sizeof(size_t);
         size_t offset = 0;
 
+        std::cout << "\n----------------------------------------" << std::endl;
+        std::cout << "\033[33mWARNING\033[0m printing messages from shared memory.." << std::endl;
         while (offset < shm_offset) {
             char* message = shm_data + offset;
             std::cout << "[\x1B[4m" +  args_ptr->to_user + "\x1B[0m] " << message << std::endl;
             offset += strlen(message) + 1; 
         }
+        if (offset == 0) {
+            std::cerr << "No messages in shared memory (you received 0 message)." << std::endl;
+        }
+        std::cout << "----------------------------------------\n" << std::endl;
+        //reset shared memory
+        size_t* shm_offset_ptr = static_cast<size_t*>(shm_ptr);
+        *shm_offset_ptr = 0;
+
     } else {
-        std::cerr << "Shared memory not mapped." << std::endl;
+        std::cerr << "\033[31mERROR\033[0m shared memory is not initialized." << std::endl;
     }
 
-    //reset shared memory
-    size_t* shm_offset_ptr = static_cast<size_t*>(shm_ptr);
-    *shm_offset_ptr = 0;
 }
 
 
-//handled by parent process
+//handled by parent process when other user disconnects
 void handle_sigpipe(int sig) {
-    std::cerr << "\033[33mWARNING\033[0m user disconnected, pipes will be removed, closing chat.." << std::endl;
+    std::cerr << "\033[33mWARNING\033[0m user disconnected, removing pipes and closing chat.." << std::endl;
+
+    //close shared memory and file descriptors before removing pipes
+    close(fd_send);
+    close(fd_receive);
+    munmap(shm_ptr, SHM_SIZE);
+    unlink(SHM_NAME);
+
     if (pipes_ptr != nullptr) {
-        pipes_ptr->cleanup_named_pipes(pipes_ptr->get_from_pipe(), pipes_ptr->get_to_pipe()); // Call cleanup function using getter methods
+        pipes_ptr->cleanup_named_pipes(pipes_ptr->get_from_pipe(), pipes_ptr->get_to_pipe()); 
     }
-    if (shm_ptr != nullptr) {
-        munmap(shm_ptr, SHM_SIZE);
-        unlink(SHM_NAME);
-    }
+
     exit(SUCCESS); 
 }
 
@@ -171,90 +192,85 @@ SharedMemory opening_shared_memory() {
 
 
 //handled by parent process
-void* send_messages() {
-    std::string pipe_send = pipes_ptr->get_from_pipe();
-    int fd = open(pipe_send.c_str(), O_WRONLY);
-    if (fd == -1) {
-        handle_pipe_error(pipe_send);
+void send_messages() {
+
+    int fd_send = open(pipes_ptr->get_from_pipe().c_str(), O_WRONLY);
+    if (fd_send == -1) {
+        handle_pipe_error(pipes_ptr->get_from_pipe());
     }
 
     //defining shared memory in parent process
     SharedMemory shared_memory = opening_shared_memory();
     shm_ptr = shared_memory.shm_ptr;
-    size_t* shm_offset_ptr = shared_memory.shm_offset_ptr;
+    shm_offset_ptr = shared_memory.shm_offset_ptr;
 
     std::string message;
     while (true) {
         if (!std::getline(std::cin, message)) {
-            if (std::cin.eof()) {
-                handle_ctrl_d(); 
-            } else {
-                std::cerr << "\033[31mERROR\033[0m Reading from stdin failed." << std::endl;
-                handle_ctrl_d();
-            }
+            handle_ctrl_d();
         }
-        if (write(fd, message.c_str(), message.size()) == -1) {
-            handle_pipe_error(pipe_send);
+        if (write(fd_send, message.c_str(), message.size()) == -1) {
+            handle_pipe_error(pipes_ptr->get_from_pipe());
         }
         std::cout << "[\x1B[4m" + args_ptr->from_user + "\x1B[0m] " << message << std::endl;
 
+        if (args_ptr->manual_mode) {
+            output_shared_memory();
+        }
+
     }
 
-    close(fd);
-    return nullptr;
 }
 
 
-
 //handled by child process
-void* receive_messages() {
-    std::string pipe_receive = pipes_ptr->get_to_pipe();
-    int fd = open(pipe_receive.c_str(), O_RDONLY);
-    if (fd == -1) {
-        handle_pipe_error(pipe_receive);
+void receive_messages() {
+
+    int fd_receive = open(pipes_ptr->get_to_pipe().c_str(), O_RDONLY);
+    if (fd_receive == -1) {
+        handle_pipe_error(pipes_ptr->get_to_pipe());
     }
 
     //defining shared memory in child process
     SharedMemory shared_memory = opening_shared_memory();
     shm_ptr = shared_memory.shm_ptr;
-    size_t* shm_offset_ptr = shared_memory.shm_offset_ptr;
+    shm_offset_ptr = shared_memory.shm_offset_ptr;
 
     
     char buffer[4096];
     ssize_t bytes_read;
 
     while (true) {
-        bytes_read = read(fd, buffer, sizeof(buffer) - 1);
+        bytes_read = read(fd_receive, buffer, sizeof(buffer) - 1);
         if (bytes_read == -1) {
-            handle_pipe_error(pipe_receive);
+            handle_pipe_error(pipes_ptr->get_to_pipe());
         } else if (bytes_read == 0) {
             kill(getppid(), SIGPIPE);
             break;
         }
         buffer[bytes_read] = '\0'; //null-terminate the string ensure no overflow   
 
+
+        //MODE MANUEL
         if (args_ptr->manual_mode) {
             size_t message_length = bytes_read + 1; //include null terminator
-
             //check if there is enough space
             if (*shm_offset_ptr + message_length > SHM_SIZE) {
                 std::cerr << "\n\033[33mWARNING\033[0m shared memory is full, releasing messages.." << std::endl;
                 output_shared_memory();
                 *shm_offset_ptr = 0; 
-                break;
+                continue;
             }
 
             char* shm_data = static_cast<char*>(shm_ptr) + sizeof(size_t) + *shm_offset_ptr;
             memcpy(shm_data, buffer, message_length);
-            *shm_offset_ptr += message_length; //udate the offset in shared memory
+            *shm_offset_ptr += message_length; //update the offset in shared memory
+
+            //prevent user with sound
+            std::cout << "\a";
         } else {
             std::cout << "[\x1B[4m" +  args_ptr->to_user + "\x1B[0m] " << buffer << std::endl;
         }     
     }
 
-    //cleanup
-    munmap(shm_ptr, SHM_SIZE);
-    unlink(SHM_NAME);
-    close(fd);
-    return nullptr;
 }

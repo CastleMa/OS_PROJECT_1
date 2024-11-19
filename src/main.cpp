@@ -13,14 +13,14 @@
 #include "shared_variables.hpp"
 
 
-//global variables
+//global variables 
 NamedPipes* pipes_ptr = nullptr;
 void* shm_ptr = nullptr;
 size_t* shm_offset_ptr = nullptr;
 ChatArgs* args_ptr = nullptr;
 std::string pid = "/chat_shm" + std::to_string(getpid()); //gets unique pid to not conflict with other program shared memory
 const char* SHM_NAME = pid.c_str();
-
+int fd_send, fd_receive;
 
 int main(int argc, char* argv[]) {
 
@@ -46,7 +46,7 @@ int main(int argc, char* argv[]) {
     signal(SIGPIPE, handle_sigpipe);
 
 
-    //create named pipes
+    //create named pipes and open them
     NamedPipes pipes(from_user, to_user);
     pipes_ptr = &pipes;
 
