@@ -89,31 +89,6 @@ void close_shared_memory(){
 
 
 
-//called by parent process
-void handle_sigint(int sig) {
-    if (args_ptr->manual_mode) {
-        if (shm_ptr != nullptr) { //uses of shared memory to know if pipes are open because shared memory is opened after pipes
-            output_shared_memory();
-        }else{
-            std::cerr << "\n\033[33mWARNING\033[0m " << args_ptr->to_user <<" is not connected, closing chat." << std::endl;
-            pipes_ptr->cleanup_named_pipes(pipes_ptr->get_from_pipe(), pipes_ptr->get_to_pipe()); 
-            exit(ERR_SIGNAL_HANDLING); //error code 4 because pipes not open
-        }
-
-    } else {
-        std::cerr << "\n\033[33mWARNING\033[0m signal SIGINT received, closing chat." << std::endl;
-        if (shm_ptr != nullptr) { //user is connected
-            close_shared_memory();
-            exit(SUCCESS);
-        }else{ //user is not connected and pipes are not open
-            pipes_ptr->cleanup_named_pipes(pipes_ptr->get_from_pipe(), pipes_ptr->get_to_pipe());
-            exit(ERR_SIGNAL_HANDLING);
-        }
-
-    }
-}
-
-
 //called by parent process and child process
 void output_shared_memory() {
     if (shm_ptr != nullptr) {
@@ -145,6 +120,31 @@ void output_shared_memory() {
 }
 
 
+//called by parent process
+void handle_sigint(int sig) {
+    if (args_ptr->manual_mode) {
+        if (shm_ptr != nullptr) { //uses of shared memory to know if pipes are open because shared memory is opened after pipes
+            output_shared_memory();
+        }else{
+            std::cerr << "\n\033[33mWARNING\033[0m " << args_ptr->to_user <<" is not connected, closing chat." << std::endl;
+            pipes_ptr->cleanup_named_pipes(pipes_ptr->get_from_pipe(), pipes_ptr->get_to_pipe()); 
+            exit(ERR_SIGNAL_HANDLING); //error code 4 because pipes not open
+        }
+
+    } else {
+        std::cerr << "\n\033[33mWARNING\033[0m signal SIGINT received, closing chat." << std::endl;
+        if (shm_ptr != nullptr) { //user is connected
+            close_shared_memory();
+            exit(SUCCESS);
+        }else{ //user is not connected and pipes are not open
+            pipes_ptr->cleanup_named_pipes(pipes_ptr->get_from_pipe(), pipes_ptr->get_to_pipe());
+            exit(ERR_SIGNAL_HANDLING);
+        }
+
+    }
+}
+
+
 //called by parent process and child process
 void handle_sigpipe(int sig) {
     std::cerr << "\033[33mWARNING\033[0m " << args_ptr->to_user << " disconnected, closing chat." << std::endl;
@@ -171,7 +171,6 @@ void handle_pipe_error(const std::string& pipe_name) {
     std::cerr << "\033[31mERROR\033[0m with " << pipe << std::endl;
     exit(ERR_PIPE_RELATED);
 }
-
 
 
 

@@ -38,15 +38,17 @@
 ## Structure
 1. [Script](./chat-bot)
 
+
 # Peaufinage des programmes
 ## Todo
 - [ ] vérification du code et possiblément meilleure structuration 
-- [ ] relecture pour mettre dans le rapport les choix d'implémentation
+- [ ] relecture du code pour mettre dans le rapport les choix d'implémentation
+- [ ] meilleure doc des du code, fonctions
+- [ ] relecture du pdf
 
 
 # Tests Automatiques
 *On devrait recevoir des tests automatiques ?*
-
 
 
 # Rapport
