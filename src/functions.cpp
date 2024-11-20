@@ -174,6 +174,7 @@ void handle_pipe_error(const std::string& pipe_name) {
 
 
 
+
 //called by parent process and child process
 SharedMemory creating_shared_memory() {
     int shm_fd = shm_open(SHM_NAME, O_CREAT | O_RDWR, 0666);
@@ -243,6 +244,7 @@ void send_messages() {
     }
 
 }
+
 
 
 
