@@ -29,7 +29,7 @@ void NamedPipes::create_named_pipes(const std::string& from_user, const std::str
     } else {
         if (mkfifo(pipe_send.c_str(), 0666) == -1) {
             std::cerr << "\033[31mERROR\033[0m creating send pipe: " << pipe_send << std::endl;
-            exit(ERR_PIPE_CREATION);
+            exit(ERR_PIPE_RELATED);
         } else {
         std::cerr << "\033[32mSuccess\033[0m creating send pipe: " << pipe_send << std::endl;
         }
@@ -41,7 +41,7 @@ void NamedPipes::create_named_pipes(const std::string& from_user, const std::str
     } else {
         if (mkfifo(pipe_receive.c_str(), 0666) == -1) {
             std::cerr << "\033[31mERROR\033[0m creating receive pipe: " << pipe_receive << std::endl;
-            exit(ERR_PIPE_CREATION);
+            exit(ERR_PIPE_RELATED);
         } else {
             std::cerr << "\033[32mSuccess\033[0m creating receive pipe: " << pipe_receive << std::endl;
         }
@@ -52,13 +52,13 @@ void NamedPipes::create_named_pipes(const std::string& from_user, const std::str
 void NamedPipes::cleanup_named_pipes(const std::string& from_pipe, const std::string& to_pipe) {
 
     if (unlink(from_pipe.c_str()) == -1) {
-        std::cerr << "\033[33mWARNING\033[0m send pipe already removed: " << from_pipe << std::endl;
+        std::cerr << "\033[Success\033[0m send pipe already removed: " << from_pipe << std::endl;
     } else {
         std::cerr << "\033[32mSuccess\033[0m removing send pipe: " << from_pipe << std::endl;
     }
 
     if (unlink(to_pipe.c_str()) == -1) {
-        std::cerr << "\033[33mWARNING\033[0m receive pipe already removed: " << to_pipe << std::endl;
+        std::cerr << "\033[33mSuccess\033[0m receive pipe already removed: " << to_pipe << std::endl;
     } else {
         std::cerr << "\033[32mSuccess\033[0m removing receive pipe: " << to_pipe << std::endl;
     }

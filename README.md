@@ -1,9 +1,9 @@
 # Objectifs
 
 - [x] Création d'un git ✅ 2024-11-12
-- [ ]  [Programme chat en C++](#programme-chat-en-c)
+- [x]  [Programme chat en C++](#programme-chat-en-c)
 - [ ]  [Programme chat-bot en Bash](#programme-chat-bot-en-bash)
-- [ ]  [Tests Auto](#tests-auto)
+- [ ]  [Tests Auto ?](#tests-auto)
 - [ ]  [Rapport](#rapport)
 - [ ] **Deadline** 📅 2024-11-23
 
@@ -16,8 +16,8 @@
 - [x] l'envoie de messages avec les critères du pdf en utilisant les pipes ✅ 2024-11-16
 - [x] implémentation des différents signaux SIGINT ET SIGPIPE pour gestion des processus ✅ 2024-11-16
 - [x] mode manuel avec les 3 cas pour la récéption des messages (SIGINT, mess envoyé par user, +4096bytes en attente)
-- [ ] mode bot
-- [ ] checkup des codes d'erreurs 
+- [x] mode bot
+- [x] checkup des codes d'erreurs 
 
 
 ## Structure
@@ -31,7 +31,9 @@
 # Programme chat-bot en Bash
 
 ## ToDo
+- [ ]
 - [ ] voir la section conseils du pdf 
+- [ ] checkup des erreurs
 
 ## Structure
 1. [Script](./chat-bot)
@@ -45,6 +47,7 @@
 
 ## Todo 
 - [ ] Choix du template latex si latex car peut être markdown si flemme et pas le temps
+
 
 ## Structure 
 <small>*On fait une sorte de README dans le rapport*</small>

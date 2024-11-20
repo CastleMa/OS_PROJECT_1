@@ -13,10 +13,10 @@
 #include "shared_variables.hpp"
 
 
-//handled by parent process
+//called by parent process
 int verify_arguments(int argc, char* argv[], std::string& from_user, std::string& to_user, bool& manual_mode, bool& bot_mode) {
     if (argc < 3 || argc > 5) {
-        std::cerr << "\033[31mERROR\033[0m use: " << argv[0] << " \033[4mfrom_user_pseudo\033[0m \033[4mto_user_pseudo\033[0m [\033[1m--bot\033[0m] [\033[1m--manuel\033[0m]." << std::endl;
+        std::cerr << "\033[31mERROR\033[0m use: " << argv[0] << " \033[4mfrom_username\033[0m \033[4mto_user_username\033[0m [\033[1m--bot\033[0m] [\033[1m--manuel\033[0m]." << std::endl;
         return ERR_INVALID_ARGS;
     }
 
@@ -52,20 +52,18 @@ int verify_arguments(int argc, char* argv[], std::string& from_user, std::string
 }
 
 
-
-
+//called by parent process
 void display_information(){
 
-    if (args_ptr->manual_mode) {
-        std::cout << "\033[33mWARNING\033[0m manual mode enabled, press CTRL+C or send messages to receive messages from other user\nYou can CTRL+C before user joins or CTRL+D during your chat to exit." << std::endl;
+    if (!args_ptr->manual_mode) {
+        std::cout << "\033[33mWARNING\033[0m you can CTRL+C before and during your chat to exit." << std::endl;
+    } else {
+        std::cout << "\033[33mWARNING\033[0m manual mode enabled, press CTRL+C or send messages to receive messages from other user.\n\033[33mWARNING\033[0m you can CTRL+C before user connects or CTRL+D during your chat to exit." << std::endl;
     }
-
-
 }
 
 
-
-//handled by parent process
+//called by parent process
 bool contains_forbidden_characters(const std::string& str) {
     const std::string forbidden = "<>-[]/";
     for (char c : str) {
@@ -77,26 +75,48 @@ bool contains_forbidden_characters(const std::string& str) {
 }
 
 
+//called by parent process
+void close_pipes(){
+    close(fd_send);
+    close(fd_receive);
+}
 
-//handled by parent process
+//called by parent process 
+void close_shared_memory(){
+    munmap(shm_ptr, SHM_SIZE);
+    unlink(SHM_NAME);
+}
+
+
+
+//called by parent process
 void handle_sigint(int sig) {
     if (args_ptr->manual_mode) {
-        std::cout << "\n\033[33mWARNING\033[0m signal SIGINT received.." << std::endl;
-        output_shared_memory();
+        if (shm_ptr != nullptr) { //uses of shared memory to know if pipes are open because shared memory is opened after pipes
+            output_shared_memory();
+        }else{
+            std::cerr << "\n\033[33mWARNING\033[0m " << args_ptr->to_user <<" is not connected, closing chat." << std::endl;
+            pipes_ptr->cleanup_named_pipes(pipes_ptr->get_from_pipe(), pipes_ptr->get_to_pipe()); 
+            exit(ERR_SIGNAL_HANDLING); //error code 4 because pipes not open
+        }
+
     } else {
-        std::cout << "\n\033[33mWARNING\033[0m signal SIGINT received and no --manuel mode, closing chat.." << std::endl;
-        //close shared memory and file descriptors
-        close(fd_send);
-        close(fd_receive);
-        munmap(shm_ptr, SHM_SIZE);
-        unlink(SHM_NAME);
-        
-        exit(SUCCESS);
+        std::cout << "\n\033[33mWARNING\033[0m signal SIGINT received, closing chat." << std::endl;
+        pipes_ptr->cleanup_named_pipes(pipes_ptr->get_from_pipe(), pipes_ptr->get_to_pipe());
+        if (shm_ptr != nullptr) {
+            close_shared_memory();
+            exit(SUCCESS);
+        }else{
+            exit(ERR_SIGNAL_HANDLING);
+        }
+
     }
 }
 
 
-//handled by parent process and child process
+
+
+//called by parent process and child process
 void output_shared_memory() {
     if (shm_ptr != nullptr) {
         shm_offset_ptr = static_cast<size_t*>(shm_ptr);
@@ -105,8 +125,8 @@ void output_shared_memory() {
         char* shm_data = static_cast<char*>(shm_ptr) + sizeof(size_t);
         size_t offset = 0;
 
-        std::cout << "\n----------------------------------------" << std::endl;
-        std::cout << "\033[33mWARNING\033[0m printing messages from shared memory.." << std::endl;
+        std::cout << "\n\033[33mWARNING\033[0m printing messages from shared memory.." << std::endl;
+        std::cout << "---------------------------------------------------------------------------------------------" << std::endl;
         while (offset < shm_offset) {
             char* message = shm_data + offset;
             std::cout << "[\x1B[4m" +  args_ptr->to_user + "\x1B[0m] " << message << std::endl;
@@ -115,52 +135,49 @@ void output_shared_memory() {
         if (offset == 0) {
             std::cerr << "No messages in shared memory (you received 0 message)." << std::endl;
         }
-        std::cout << "----------------------------------------\n" << std::endl;
+        std::cout << "---------------------------------------------------------------------------------------------\n" << std::endl;
         //reset shared memory
         size_t* shm_offset_ptr = static_cast<size_t*>(shm_ptr);
         *shm_offset_ptr = 0;
 
     } else {
-        std::cerr << "\033[31mERROR\033[0m shared memory is not initialized." << std::endl;
+        std::cerr << "\033[31mERROR\033[0m shared memory is not initialized, user is not connected yet." << std::endl;
     }
 
 }
 
 
-//handled by parent process when other user disconnects
+//called by parent process and child process
 void handle_sigpipe(int sig) {
-    std::cerr << "\033[33mWARNING\033[0m user disconnected, removing pipes and closing chat.." << std::endl;
-
-    //close shared memory and file descriptors before removing pipes
-    close(fd_send);
-    close(fd_receive);
-    munmap(shm_ptr, SHM_SIZE);
-    unlink(SHM_NAME);
-
+    std::cerr << "\033[33mWARNING\033[0m " << args_ptr->to_user << " disconnected, removing pipes and closing chat." << std::endl;
+    //close shared memory of other program and named pipes before exiting
+    close_shared_memory();
+    close_pipes();
     if (pipes_ptr != nullptr) {
         pipes_ptr->cleanup_named_pipes(pipes_ptr->get_from_pipe(), pipes_ptr->get_to_pipe()); 
     }
-
     exit(SUCCESS); 
 }
 
 
-
-//handled by parent process
+//called by parent process
 void handle_ctrl_d() {
-    std::cout << "\n\033[33mWARNING\033[0m STDIN is closed, closing chat.." << std::endl;
+    std::cout << "\n\033[33mWARNING\033[0m STDIN is closed, closing chat." << std::endl;
+    //close shared memory of one program before exiting
+    close_shared_memory();
     exit(SUCCESS);
 }
 
-//handled by parent process and child process
+//called by parent process and child process
 void handle_pipe_error(const std::string& pipe_name) {
     std::cerr << "\033[31mERROR\033[0m with " << pipe << std::endl;
-    exit(ERR_PIPE_WRITE_READ_OPENING);
+    exit(ERR_PIPE_RELATED);
 }
 
 
-//handled by parent process and child process
-SharedMemory opening_shared_memory() {
+
+//called by parent process and child process
+SharedMemory creating_shared_memory() {
     int shm_fd = shm_open(SHM_NAME, O_CREAT | O_RDWR, 0666);
     if (shm_fd == -1) {
         std::cerr << "\033[31mERROR\033[0m opening shared memory: " << strerror(errno) << std::endl;
@@ -191,6 +208,8 @@ SharedMemory opening_shared_memory() {
 }
 
 
+
+
 //handled by parent process
 void send_messages() {
 
@@ -198,9 +217,10 @@ void send_messages() {
     if (fd_send == -1) {
         handle_pipe_error(pipes_ptr->get_from_pipe());
     }
+    std::cerr << "\033[33mWARNING\033[0m " << args_ptr->to_user << " is connected, you can start chatting." << std::endl;
 
-    //defining shared memory in parent process
-    SharedMemory shared_memory = opening_shared_memory();
+    //opening shared memory in parent process
+    SharedMemory shared_memory = creating_shared_memory();
     shm_ptr = shared_memory.shm_ptr;
     shm_offset_ptr = shared_memory.shm_offset_ptr;
 
@@ -212,15 +232,18 @@ void send_messages() {
         if (write(fd_send, message.c_str(), message.size()) == -1) {
             handle_pipe_error(pipes_ptr->get_from_pipe());
         }
-        std::cout << "[\x1B[4m" + args_ptr->from_user + "\x1B[0m] " << message << std::endl;
 
-        if (args_ptr->manual_mode) {
+        if (args_ptr->manual_mode || !args_ptr->bot_mode) {
+            std::cout << "[\x1B[4m" + args_ptr->from_user + "\x1B[0m] " << message << std::endl;
             output_shared_memory();
+        } else{
+           //do nothing
         }
 
     }
 
 }
+
 
 
 //handled by child process
@@ -231,8 +254,8 @@ void receive_messages() {
         handle_pipe_error(pipes_ptr->get_to_pipe());
     }
 
-    //defining shared memory in child process
-    SharedMemory shared_memory = opening_shared_memory();
+    //opening shared memory in child process
+    SharedMemory shared_memory = creating_shared_memory();
     shm_ptr = shared_memory.shm_ptr;
     shm_offset_ptr = shared_memory.shm_offset_ptr;
 
@@ -268,7 +291,12 @@ void receive_messages() {
 
             //prevent user with sound
             std::cout << "\a";
-        } else {
+        //MODE BOT
+        } else if (args_ptr->bot_mode) {
+            std::cout << "["+  args_ptr->to_user + "] " << buffer << std::endl;
+            std::flush(std::cout);
+        //MODE NORMAL
+        } else{
             std::cout << "[\x1B[4m" +  args_ptr->to_user + "\x1B[0m] " << buffer << std::endl;
         }     
     }
