@@ -54,7 +54,6 @@ int verify_arguments(int argc, char* argv[], std::string& from_user, std::string
 
 //called by parent process
 void display_information(){
-
     if (!args_ptr->manual_mode) {
         std::cerr << "\033[33mWARNING\033[0m you can CTRL+C before and after user joins to exit." << std::endl;
     } else {
@@ -210,7 +209,6 @@ SharedMemory creating_shared_memory() {
 
 //handled by parent process
 void send_messages() {
-
     int fd_send = open(pipes_ptr->get_from_pipe().c_str(), O_WRONLY);
     if (fd_send == -1) {
         handle_pipe_error(pipes_ptr->get_from_pipe());
@@ -249,7 +247,6 @@ void send_messages() {
 
 //handled by child process
 void receive_messages() {
-
     int fd_receive = open(pipes_ptr->get_to_pipe().c_str(), O_RDONLY);
     if (fd_receive == -1) {
         handle_pipe_error(pipes_ptr->get_to_pipe());

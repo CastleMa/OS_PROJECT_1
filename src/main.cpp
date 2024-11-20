@@ -22,8 +22,8 @@ std::string pid = "/chat_shm" + std::to_string(getpid()); //gets unique pid to n
 const char* SHM_NAME = pid.c_str();
 int fd_send, fd_receive;
 
-int main(int argc, char* argv[]) {
 
+int main(int argc, char* argv[]) {
     std::string from_user, to_user;
     bool manual_mode, bot_mode;
 
@@ -50,7 +50,7 @@ int main(int argc, char* argv[]) {
     pipes_ptr = &pipes;
 
 
-    //cild process to receive messages
+    //child process to receive messages
     pid_t receive_pid = fork();
     if (receive_pid == -1) {
         std::cerr << "\033[31mERROR\033[0m while creating child process." << std::endl;

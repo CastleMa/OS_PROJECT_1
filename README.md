@@ -1,12 +1,12 @@
 # Objectifs
 
 - [x] Création d'un git ✅ 2024-11-12
-- [x]  [Programme chat en C++](#programme-chat-en-c)
-- [x]  [Programme chat-bot en Bash](#programme-chat-bot-en-bash)
+- [x]  [Programme chat en C++](#programme-chat-en-c) ✅ 2024-11-20
+- [x]  [Programme chat-bot en Bash](#programme-chat-bot-en-bash) ✅ 2024-11-20
 - [ ]  [Peaufinage](#peaufinage-des-programmes)
 - [ ]  [Tests Auto ?](#tests-auto)
-- [ ]  [Rapport](#rapport)
-- [ ] **Deadline** 📅 2024-11-23
+- [x]  [Rapport](#rapport) ✅ 2024-11-21
+- [x] **Deadline** 📅 2024-11-23 ✅ 2024-11-21
 
 
 
@@ -41,108 +41,10 @@
 
 # Peaufinage des programmes
 ## Todo
-- [ ] vérification du code et possiblément meilleure structuration 
-- [ ] relecture du code pour mettre dans le rapport les choix d'implémentation
-- [ ] meilleure doc des du code, fonctions
-- [ ] relecture du pdf
+- [ ] ~~vérification du code et possiblément meilleure structuration~~
+- [ ] meilleure documentation du code, fonctions
+- [x] relecture du pdf
 
 
 # Tests Automatiques
 *On devrait recevoir des tests automatiques ?*
-
-
-# Rapport
-
-## Todo 
-- [ ] Choix du template latex si latex car peut être markdown si flemme et pas le temps
-
-
-## Structure 
-<small>*On fait une sorte de README dans le rapport*</small>
-1. [Introduction et présentation](#introduction-et-présentation)
-2. [Dépendances et installation](#dépendances-et-installation)
-3. [Liste des fonctionnalités](#liste-des-fonctionnalités)
-4. [Usage et illustrations](#usage-et-illustrations)
-5. [Difficultés rencontrées, solution apportées, choix d'implémentation](#difficultés-rencontrées-solution-apportées-choix-dimplémentation)
-8. [Conclusion](#conclusion)
-
-
-## Notions à mettre dans le rapport
-- Justification de l'utilisation du type de mémoire partagée et la quantité (4096bytes à priori)
-- Précisions sur les signaux utilisés pour le projet
-- Brèves explications sur les retours d'erreurs, SIGINT, mauvais arguments, pseudo trop long, caractères spéciaux
-- Justifications du processus utilisé parmi les 2 lors des 3 scénarios du mode --manuel
-- Voir section Conseils du pdf pour préciser l'implémentation de ces conseils
-- 2-3 pages
-
-
-
-## Brouillon de texte
-
-### Introduction et présentation
-
-Ce projet de INFO-F201 consiste en un petit programme permettant de discuter avec une personne ou un robot localement à l'aide de pipes nommés. Nous allons d'abord expliquer comment installer le programme et le faire tourner. Puis lister les fonctionnalités de ce dernier, montrer des exemples d'utilisation. Ensuite, nous discuterons des difficultés rencontrés et des solutions apportées en justifiant nos choix d'implémentation. Enfin, nous terminerons par faire une conclusion du projet en donnant notre sentiment global de cette aventure.
-
-
-### Dépendances et installation
-
-Tout d'abord, le programme a été développé pour tourner sur une distro Debian. Quelques préliminaires sont requis pour s'assurer une bonne installation. Ouvrez le terminal (ctrl+alt+t) et exécutez ces commandes ci-dessous:
-
- ```bash
-sudo apt update
-sudo apt install build-essential
-sudo apt install g++
-sudo apt install make
-```
-
-Nous avons décidé de faire un dépot github pour faciliter la mise en oeuvre du projet. Comme les fichiers sources et un *Makefile* se trouvent dans le zip, vous pouvez compiler et exécuter le programme depuis le chemin de ce dernier à l'aide de *make*. Alternativement si vous perdez le fichier zip, vous pouvez exécuter les commandes suivantes dans le répertoire de votre choix:
-
-
- ```bash
-git clone https://github.com/CastleMa/OS_PROJECT_1
-cd OS_PROJECT_1
-make
-```
-
-
-### Liste des fonctionnalités
-Les fonctionnalités proposées sont les suivantes:
-```bash
---manuel
-```
-Permet de recevoir les messages de l'interlocuteur sous certaines conditions.
-```bash
---bot
-```
-Permet de discuter avec un bot et exécuter les commandes suivantes:
-- « liste » : lister tous les fichiers du dossier de travail du robot;
-- « li FICHIER » : lire le contenu du fichier « FICHIER » (ou tout autre nom choisi) ou
-affiche une erreur en cas d’échec (p.ex., si le fichier est inexistant);
-- « qui suis-je » : donne le pseudonyme du destinataire;
-- « au revoir » : termine le robot avec le code de retour 0
-
-
-### Usage et illustrations
-Dans le répertoire où se trouve le fichier exécutable, faites:
-```bash
-./chat
-```
-*Screenshot d'utilisation*
-
-
-
-### Difficultés rencontrées, solution apportées, choix d'implémentation
-
-#### Préambule et balbutiements
-L'utilisation de C n'était pas possible quant à l'utilisation de certaines librairies comme *\<iostream>*, alors nous avons choisi d'utiliser C++. La gestion des erreurs s'est faite via des macros dans un fichier *header* pour permettre une meilleure lisibilité. Le soucis d'organisation nous a égalemenet préoccupé, nous avons opté pour une structure modulaire séparant les fonctions, les classes et le main dans différents fichiers et créant un dossier supplémentaire contenant les différents *headers*. 
-
-#### Pipes, signaux et processus
-Pas encore fait, faut que je fasse des tests pour comprendre le binz là
-
-
-#### Mémoire partagée et bot
-idem
-
-
-### Conclusion
-blabla
