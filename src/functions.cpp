@@ -102,7 +102,7 @@ void output_shared_memory() {
         std::cout << "---------------------------------------------------------------------------------------------" << std::endl;
         while (offset < shm_offset) {
             char* message = shm_data + offset;
-            std::cout << "[\x1B[4m" +  args_ptr->to_user + "\x1B[0m] " << message << std::endl;
+            std::cout << "[\x1B[4m" <<  args_ptr->to_user << "\x1B[0m] " << message << std::endl;
             offset += strlen(message) + 1; 
         }
         if (offset == 0) {
@@ -232,12 +232,12 @@ void send_messages() {
         }
 
         if (args_ptr->manual_mode) {
-            std::cout << "[\x1B[4m" + args_ptr->from_user + "\x1B[0m] " << message << std::endl;
+            std::cout << "[\x1B[4m" << args_ptr->from_user << "\x1B[0m] " << message << std::endl;
             output_shared_memory();
         } else if (args_ptr->bot_mode) {
            //do nothing
         } else {
-            std::cout << "[\x1B[4m" + args_ptr->from_user + "\x1B[0m] " << message << std::endl;
+            std::cout << "[\x1B[4m" << args_ptr->from_user << "\x1B[0m] " << message << std::endl;
         }
 
     }
@@ -269,13 +269,13 @@ void receive_messages() {
         if (bytes_read == -1) {
             handle_pipe_error(pipes_ptr->get_to_pipe());
         } else if (bytes_read == 0) {
-            kill(getppid(), SIGPIPE);
+            kill(getppid(), SIGPIPE); //user disconnected, prevent parent process to close chat
             break;
         }
         buffer[bytes_read] = '\0'; //null-terminate the string ensure no overflow   
 
 
-        //MODE MANUEL
+        //MODE MANUAL
         if (args_ptr->manual_mode) {
             size_t message_length = bytes_read + 1; //include null terminator
             //check if there is enough space
@@ -290,15 +290,14 @@ void receive_messages() {
             memcpy(shm_data, buffer, message_length);
             *shm_offset_ptr += message_length; //update the offset in shared memory
 
-            //prevent user with sound
-            std::cout << "\a";
+            std::cout << "\a"; //prevent user with sound
         //MODE BOT
         } else if (args_ptr->bot_mode) {
-            std::cout << "["+  args_ptr->to_user + "] " << buffer << std::endl;
-            std::flush(std::cout);
+            std::cout << "["<<  args_ptr->to_user << "] " << buffer << std::endl;
+            std::flush(std::cout); 
         //MODE NORMAL
         } else{
-            std::cout << "[\x1B[4m" +  args_ptr->to_user + "\x1B[0m] " << buffer << std::endl;
+            std::cout << "[\x1B[4m" <<  args_ptr->to_user << "\x1B[0m] " << buffer << std::endl;
         }     
     }
 

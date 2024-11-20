@@ -1,19 +1,18 @@
 #!/bin/bash
 
-
 #parameters verification
 if [ "$#" -lt 1 ] || [ "$#" -gt 2 ]; then
     echo "Usage: chat-bot destinataire [pseudo]" >&2
     exit 1
 fi
 
-# Variables globales
+#globale variables
 DESTINATAIRE="$1"
 PSEUDO="${2:-bot}"  #bot is the default value
 
-
 #coproc creation
 coproc CHAT { ./chat "$PSEUDO" "$DESTINATAIRE" --bot; }
+
 
 #verification if the chat program is running
 if [ $? -ne 0 ]; then
@@ -39,18 +38,16 @@ function execute_command() {
             ;;
         "au revoir")
             printf "Au revoir!\n" >&"${CHAT[1]}"
-            #close the file descriptors
-            exit 0
+            exit 0 
             ;;
         li\ *)  #read file line by line
             local filename="${command#li }"
-            if [ -f "$filename" ]; then
-                #lire le fichier ligne par ligne
+            if [ -f "$filename" ] && [ -r "$filename" ]; then
                 while IFS= read -r line; do
                     printf "%s\n" "$line" >&"${CHAT[1]}"
                 done < "$filename"
             else
-                printf "Erreur: Fichier '%s' inexistant.\n" "$filename" >&"${CHAT[1]}"
+                printf "\033[31mERROR\033[0m file '%s' doesn't exist.\n" "$filename" >&"${CHAT[1]}"
             fi
             ;;
         *)
@@ -70,7 +67,7 @@ function execute_command() {
     esac
 }
 
-# Fonction pour interagir avec le programme chat
+#gets message from user
 function interact_with_chat() {
     while read -r line <&"${CHAT[0]}"; do
         #get only the command
@@ -80,6 +77,5 @@ function interact_with_chat() {
         fi
     done
 }
-
 
 interact_with_chat

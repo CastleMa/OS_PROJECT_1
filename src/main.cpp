@@ -33,7 +33,6 @@ int main(int argc, char* argv[]) {
         return result;
     }
 
-
     //args to pass to the processes
     ChatArgs args = {from_user, to_user, manual_mode, bot_mode};
     args_ptr = &args;
