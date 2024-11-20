@@ -1,0 +1,85 @@
+#!/bin/bash
+
+
+#parameters verification
+if [ "$#" -lt 1 ] || [ "$#" -gt 2 ]; then
+    echo "Usage: chat-bot destinataire [pseudo]" >&2
+    exit 1
+fi
+
+# Variables globales
+DESTINATAIRE="$1"
+PSEUDO="${2:-bot}"  #bot is the default value
+
+
+#coproc creation
+coproc CHAT { ./chat "$PSEUDO" "$DESTINATAIRE" --bot; }
+
+#verification if the chat program is running
+if [ $? -ne 0 ]; then
+    echo "Erreur: Impossible de démarrer le programme chat." >&2
+    exit 1
+fi
+
+function execute_command() {
+    local command="$1"
+    case "$command" in
+        "liste")
+            local files
+            files=( * )
+            if [ ${#files[@]} -gt 0 ]; then
+                printf "%s " "${files[@]}" >&"${CHAT[1]}"
+                printf "\n" >&"${CHAT[1]}"
+            else
+                printf "Aucun fichier trouvé.\n" >&"${CHAT[1]}"
+            fi
+            ;;
+        "qui suis-je")
+            printf "%s\n" "$DESTINATAIRE" >&"${CHAT[1]}"
+            ;;
+        "au revoir")
+            printf "Au revoir!\n" >&"${CHAT[1]}"
+            #close the file descriptors
+            exit 0
+            ;;
+        li\ *)  #read file line by line
+            local filename="${command#li }"
+            if [ -f "$filename" ]; then
+                #lire le fichier ligne par ligne
+                while IFS= read -r line; do
+                    printf "%s\n" "$line" >&"${CHAT[1]}"
+                done < "$filename"
+            else
+                printf "Erreur: Fichier '%s' inexistant.\n" "$filename" >&"${CHAT[1]}"
+            fi
+            ;;
+        *)
+            #verfy if the command is in the list
+            if [ -f "liste-bot.txt" ]; then
+                local response
+                response=$(grep -m 1 "^$command " liste-bot.txt | cut -d' ' -f2-)
+                if [ -n "$response" ]; then
+                    printf "%s\n" "$response" >&"${CHAT[1]}"
+                else
+                    printf "🤖 ?\n" >&"${CHAT[1]}"
+                fi
+            else
+                printf "🤖 ?\n" >&"${CHAT[1]}"
+            fi
+            ;;
+    esac
+}
+
+# Fonction pour interagir avec le programme chat
+function interact_with_chat() {
+    while read -r line <&"${CHAT[0]}"; do
+        #get only the command
+        if [[ "$line" =~ ^\[$DESTINATAIRE\]\ (.*)$ ]]; then
+            command="${BASH_REMATCH[1]}"
+            execute_command "$command"
+        fi
+    done
+}
+
+
+interact_with_chat

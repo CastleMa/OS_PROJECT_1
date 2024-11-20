@@ -29,7 +29,7 @@ void NamedPipes::create_named_pipes(const std::string& from_user, const std::str
     } else {
         if (mkfifo(pipe_send.c_str(), 0666) == -1) {
             std::cerr << "\033[31mERROR\033[0m creating send pipe: " << pipe_send << std::endl;
-            exit(ERR_PIPE_CREATION);
+            exit(ERR_PIPE_RELATED);
         } else {
         std::cerr << "\033[32mSuccess\033[0m creating send pipe: " << pipe_send << std::endl;
         }
@@ -41,7 +41,7 @@ void NamedPipes::create_named_pipes(const std::string& from_user, const std::str
     } else {
         if (mkfifo(pipe_receive.c_str(), 0666) == -1) {
             std::cerr << "\033[31mERROR\033[0m creating receive pipe: " << pipe_receive << std::endl;
-            exit(ERR_PIPE_CREATION);
+            exit(ERR_PIPE_RELATED);
         } else {
             std::cerr << "\033[32mSuccess\033[0m creating receive pipe: " << pipe_receive << std::endl;
         }

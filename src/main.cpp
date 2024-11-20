@@ -59,7 +59,7 @@ int main(int argc, char* argv[]) {
     } else if (receive_pid == 0) {
         signal(SIGINT, SIG_IGN); //ignore SIGINT in the child process
         receive_messages();
-        exit(SUCCESS);
+        exit(SUCCESS); //exit child process
     }
 
     //parent process to send messages
