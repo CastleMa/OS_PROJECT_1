@@ -16,7 +16,7 @@
 //called by parent process
 int verify_arguments(int argc, char* argv[], std::string& from_user, std::string& to_user, bool& manual_mode, bool& bot_mode) {
     if (argc < 3 || argc > 5) {
-        std::cerr << "\033[31mERROR\033[0m use: " << argv[0] << " \033[4mfrom_username\033[0m \033[4mto_user_username\033[0m [\033[1m--bot\033[0m] [\033[1m--manuel\033[0m]." << std::endl;
+        std::cerr << "\033[31mERROR\033[0m use: " << argv[0] << " \033[4mfrom_username\033[0m \033[4mto_username\033[0m [\033[1m--bot\033[0m] [\033[1m--manuel\033[0m]." << std::endl;
         return ERR_INVALID_ARGS;
     }
 
