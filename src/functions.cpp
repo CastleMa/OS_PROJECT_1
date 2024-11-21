@@ -216,9 +216,11 @@ void send_messages() {
     std::cerr << "\033[33mWARNING\033[0m " << args_ptr->to_user << " is connected, you can start chatting." << std::endl;
 
     //opening shared memory in parent process
-    SharedMemory shared_memory = creating_shared_memory();
-    shm_ptr = shared_memory.shm_ptr;
-    shm_offset_ptr = shared_memory.shm_offset_ptr;
+    if (args_ptr->manual_mode) {
+        SharedMemory shared_memory = creating_shared_memory();
+        shm_ptr = shared_memory.shm_ptr;
+        shm_offset_ptr = shared_memory.shm_offset_ptr;
+    }
 
     std::string message;
     while (true) {
@@ -253,9 +255,11 @@ void receive_messages() {
     }
 
     //opening shared memory in child process
+    if (args_ptr->manual_mode) {
     SharedMemory shared_memory = creating_shared_memory();
     shm_ptr = shared_memory.shm_ptr;
     shm_offset_ptr = shared_memory.shm_offset_ptr;
+    }
 
     
     char buffer[4096];
