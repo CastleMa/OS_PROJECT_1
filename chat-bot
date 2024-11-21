@@ -2,7 +2,7 @@
 
 #parameters verification
 if [ "$#" -lt 1 ] || [ "$#" -gt 2 ]; then
-    printf "\033[31mERROR\033[0m use: chat-bot destinataire [pseudo]\n" >&2
+    printf "\033[31mERROR\033[0m use: chat-bot destinataire [pseudo].\n" >&2
     exit 1
 fi
 
