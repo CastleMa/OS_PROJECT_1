@@ -42,7 +42,7 @@
 # Peaufinage des programmes
 ## Todo
 - [ ] ~~vérification du code et possiblément meilleure structuration~~
-- [ ] meilleure documentation du code, fonctions
+- [ ] ~~meilleure documentation du code, fonctions~~
 - [x] relecture du pdf
 
 
