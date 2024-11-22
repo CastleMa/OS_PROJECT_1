@@ -137,37 +137,37 @@ Dans le répertoire où se trouve le fichier exécutable, exécutez :
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\textwidth]{/home/pingwin/Desktop/CodeInfo/INFO-F201/OS_PROJECT_1/tex/1.png}
+    \includegraphics[width=\textwidth]{1.png}
     \caption{Utilisateur bob exécute ./chat}
     \label{fig:1}
 \end{figure}
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\textwidth]{/home/pingwin/Desktop/CodeInfo/INFO-F201/OS_PROJECT_1/tex/2.png}
+    \includegraphics[width=\textwidth]{2.png}
     \caption{Bob veut communiquer avec alice}
     \label{fig:2}
 \end{figure}
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\textwidth]{/home/pingwin/Desktop/CodeInfo/INFO-F201/OS_PROJECT_1/tex/3.png}
+    \includegraphics[width=\textwidth]{3.png}
     \caption{Alice veut communiquer avec bob}
     \label{fig:3}
 \end{figure}
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\textwidth]{/home/pingwin/Desktop/CodeInfo/INFO-F201/OS_PROJECT_1/tex/4.png}
+    \includegraphics[width=\textwidth]{4.png}
     \caption{Alice envoie un message à bob}
     \label{fig:4}
 \end{figure}
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\textwidth]{/home/pingwin/Desktop/CodeInfo/INFO-F201/OS_PROJECT_1/tex/5.png}
+    \includegraphics[width=\textwidth]{5.png}
     \caption{Bob envoie un message à alice}
     \label{fig:5}
 \end{figure}
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\textwidth]{/home/pingwin/Desktop/CodeInfo/INFO-F201/OS_PROJECT_1/tex/6.png}
+    \includegraphics[width=\textwidth]{6.png}
     \caption{Alice stoppe la conversation}
     \label{fig:6}
 \end{figure}
@@ -197,7 +197,7 @@ Nous avons essayé au maximum de gérer les erreurs et de les afficher pour perm
 De plus, nous avons utilisé des signaux pour gérer les interruptions de l'utilisateur et la déconnexion de l'interlocuteur.
 Dans le premier cas, nous avons géré \texttt{SIGINT} dont le processus père s'occupe et dans le second cas, nous avons utilisé un \texttt{SIGPIPE} 
 que le processus enfant appelle pour informer le père de la déconnexion de l'interlocuteur. 
-Nous avons fait attention de fermer les pipes avant de les supprimer.
+Nous avons fait attention de fermer les pipes avant de les supprimer et d'également bien terminer les processus.
 
 \newpage
 
