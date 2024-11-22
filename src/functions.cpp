@@ -97,7 +97,11 @@
             std::cout << "---------------------------------------------------------------------------------------------" << std::endl;
             while (offset < shm_offset) {
                 char* message = shm_data + offset;
-                std::cout << "[\x1B[4m" <<  args_ptr->to_user << "\x1B[0m] " << message << std::endl;
+                if (args_ptr->manual_mode && !args_ptr->bot_mode){
+                    std::cout << "[\x1B[4m" <<  args_ptr->to_user << "\x1B[0m] " << message << std::endl;
+                } else { //bot mode
+                    std::cout << "[" <<  args_ptr->to_user << "] " << message << std::endl;
+                }
                 offset += strlen(message) + 1; 
             }
             if (offset == 0) {
@@ -222,7 +226,11 @@
             }
 
             if (args_ptr->manual_mode) {
+                if (args_ptr->bot_mode) { //manuel mode + bot mode
+                //do nothing
+                } else {
                 std::cout << "[\x1B[4m" << args_ptr->from_user << "\x1B[0m] " << message << std::endl;
+                }
                 output_shared_memory();
             } else if (args_ptr->bot_mode) {
             //do nothing
