@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2024.9.2)  22 NOV 2024 16:58
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2024.9.2)  22 NOV 2024 17:31
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -411,13 +411,13 @@ Package rerunfilecheck Info: File `Rapport_Projet_Os.out' has not changed.
 Here is how much of TeX's memory you used:
  12266 strings out of 478287
  199404 string characters out of 5849290
- 512839 words of memory out of 5000000
+ 512775 words of memory out of 5000000
  30286 multiletter control sequences out of 15000+600000
  479057 words of font info for 47 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  60i,6n,63p,511b,426s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texmf/fonts/enc/dvips/cm-super/cm-super-t1.enc}</usr/share/texmf/fonts/type1/public/cm-super/sfbx1000.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfbx1200.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfbx1440.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfcc1000.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm1000.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm1200.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm1728.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfti1000.pfb></usr/share/texmf/fonts/type1/public/cm-super/sftt1000.pfb>
-Output written on Rapport_Projet_Os.pdf (5 pages, 377315 bytes).
+Output written on Rapport_Projet_Os.pdf (5 pages, 374604 bytes).
 PDF statistics:
  200 PDF objects out of 1000 (max. 8388607)
  161 compressed objects within 2 object streams
