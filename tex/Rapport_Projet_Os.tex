@@ -12,7 +12,7 @@
 
 
 \title{Rapport de Projet d'OS 1}
-\author{kuzaiko}
+\author{David de Meester/566700, Imrane Benaissa/597475, Maxime Lauzeral/544599}
 \date{\today}
 
 
@@ -206,10 +206,12 @@ Nous avons fait attention de fermer les pipes avant de les supprimer et d'égale
 
 
 À la suite de la création de pipes, de la gestion des signaux et des processus, nous sommes passés au développement du mode manuel et du bot.
-Nous avons utilisé \texttt{shm\_open} pour permettre le partage de mémoire entre les processus et avons choisi d'utiliser 4096 bytes pour la quantité de mémoire partagée.
+Nous avons utilisé la librairie \texttt{<sys/mman.h>} avec \texttt{shm\_open} pour permettre la création de mémoire partagée entre les processus. Cette librairie \texttt{POSIX} 
+était le choix parfait pour ce projet destiné à une destribution \texttt{Debian}.
+Nous avons choisi d'utiliser 4096 bytes pour la quantité de mémoire partagée et une pour chaque programme. 
 Tout simplement car dans le mode manuel, nous avons une limite imposée de 4096 bytes avant l'envoi automatique des messages stockés dans la mémoire partagée.
 Pour ce qui est des 3 scénarios du mode manuel, seul le processus enfant affiche le cas où la limite est atteinte.
-Dans les deux autres cas, le père s'occupe de l'affichage. (\texttt{SIGINT} reçu et envoi de message par l'utilisateur)
+Dans les deux autres cas, le père s'occupe de l'affichage grâce à la fonction \textit{output\_shared\_memory()}. (\texttt{SIGINT} reçu et envoi de message par l'utilisateur).
 Nous avons géré le cas d'une fermeture de stdin (\texttt{CTRL+D}) pour permettre à l'utilisateur de quitter le programme.
 Encore une fois, nous avons fait attention à la gestion des erreurs et à la bonne fermeture des pipes et de la mémoire partagée.\\
 

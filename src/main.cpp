@@ -1,12 +1,5 @@
 #include <iostream>
-#include <cstring>
-#include <cstdlib>
-#include <unistd.h>
 #include <signal.h>
-#include <sys/wait.h>
-#include <fcntl.h>
-#include <sys/mman.h>
-#include <sys/stat.h>
 #include "errors.hpp"
 #include "functions.hpp"
 #include "structNclasses.hpp"

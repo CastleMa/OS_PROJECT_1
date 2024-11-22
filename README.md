@@ -3,7 +3,7 @@
 - [x] Création d'un git ✅ 2024-11-12
 - [x]  [Programme chat en C++](#programme-chat-en-c) ✅ 2024-11-20
 - [x]  [Programme chat-bot en Bash](#programme-chat-bot-en-bash) ✅ 2024-11-20
-- [ ]  [Peaufinage](#peaufinage-des-programmes)
+- [x]  [Peaufinage](#peaufinage-des-programmes)
 - [ ]  [Tests Auto ?](#tests-auto)
 - [x]  [Rapport](#rapport) ✅ 2024-11-21
 - [x] **Deadline** 📅 2024-11-23 ✅ 2024-11-21

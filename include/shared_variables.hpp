@@ -2,7 +2,6 @@
 #define SHARED_VARIABLE_HPP
 
 #include "structNclasses.hpp"
-#include <string>
 
 
 //shared variables between source files

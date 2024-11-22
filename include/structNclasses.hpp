@@ -3,7 +3,6 @@
 
 #include <string>
 
-
 //structs and classes
 
 struct ChatArgs {
